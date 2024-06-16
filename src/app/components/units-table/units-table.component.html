@@ -1,0 +1,20 @@
+<div class="bg-white p-4 pt-0 table-container">
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th scope="col" class="w-10">ID</th>
+                <th scope="col" class="w-25">Name</th>
+                <th scope="col" class="w-25">Age</th>
+                <th scope="col" class="w-40">Costs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let unit of data" (click)="openUnitDetail(unit.id)" class="cursor-pointer">
+                <th scope="row">{{unit.id}}</th>
+                <td>{{unit.name}}</td>
+                <td>{{unit.age}}</td>
+                <td>{{getFormattedCost(unit.cost)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

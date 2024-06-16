@@ -1,0 +1,42 @@
+<div class="container" [formGroup]="filterForm">
+    <div class="row">
+        <div class="col-12">
+            <div class="ages my-4">
+                <h2>Ages</h2>
+                <div class="d-flex gap-2">
+                    <button 
+                    class="btn" 
+                    *ngFor="let age of ages" 
+                    (click)="filterByAge(age)"
+                    [ngClass]="
+                    {
+                        'btn-secondary btn-active': age === filterForm.value.age, 
+                        'btn-light': age !== filterForm.value.age
+                    }">{{age}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" formGroupName="cost">
+        <div class="col-12">
+            <div class="costs my-4">
+                <h2>Costs</h2>
+                <div class="d-flex gap-4 my-2" *ngFor="let cost of costTypes">
+                    <div><input type="checkbox" (change)="changeCostCheckbox($event, cost.name)"/></div>
+                    <div class="cost-label">{{cost.name}}</div>
+                    <div>
+                        <input type="range" [min]="0" [max]="getMaxValueByCostType(cost.name)" [formControlName]="cost.name" />
+                    </div>
+                    <div>{{cost.min}}-{{getCost(cost.name)}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="units-table my-4">
+                <app-units-table [data]="unitsTableData"></app-units-table>
+            </div>  
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="info-container">
+                <ng-container *ngFor="let item of unitInfoArray">
+                    <app-label-value [data]="item"></app-label-value>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
