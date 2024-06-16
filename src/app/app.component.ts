@@ -28,12 +28,11 @@ export class AppComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onBodyClick(event: Event): void {
-    console.log('213');
     const target = event.target as HTMLElement;
     const isNavbarToggler = target.classList.contains('navbar-toggler') || target.classList.contains('nav-link');
-    const isNavbarCollapseShown = target.classList.contains('navbar-collapse') && target.classList.contains('show');
+    const isNavbarCollapseShown = this.isNavOpen;
 
-    if (isNavbarToggler || isNavbarCollapseShown) {
+    if (isNavbarToggler && isNavbarCollapseShown) {
       this.toggleNav();
     }
   }
