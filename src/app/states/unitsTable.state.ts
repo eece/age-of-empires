@@ -45,19 +45,19 @@ export class UnitsTableState {
             tempFilteredResults = tempFilteredResults.filter((item) => item.age === payload.age);
         }
         if(payload?.cost){
-            if(payload?.cost?.Wood){
+            if(Number(payload?.cost?.Wood) >= 0){
                 tempFilteredResults = tempFilteredResults?.filter((item) => 
-                    !item.cost?.Wood || (item.cost?.Wood <= (payload?.cost?.Wood || 0))          
+                    typeof item.cost?.Wood !== 'number'  || ((item.cost?.Wood <= (payload?.cost?.WoodMax || 0)) && (item.cost?.Wood >= (payload?.cost?.Wood || 0)))          
                 ); 
             }
-            if(payload?.cost?.Food){
+            if(Number(payload?.cost?.Food) >= 0){
                 tempFilteredResults = tempFilteredResults?.filter((item) => 
-                    !item.cost?.Food || (item.cost?.Food <= (payload?.cost?.Food || 0))           
-                ); 
+                  typeof item.cost?.Food !== 'number'  || ((item.cost?.Food <= (payload?.cost?.FoodMax || 0)) && (item.cost?.Food >= (payload?.cost?.Food || 0)))          
+              ); 
             }
-            if(payload?.cost?.Gold){
+            if(Number(payload?.cost?.Gold) >= 0){
                 tempFilteredResults = tempFilteredResults?.filter((item) => 
-                    !item.cost?.Gold || (item.cost?.Gold <= (payload?.cost?.Gold || 0))          
+                  typeof item.cost?.Gold !== 'number'  || ((item.cost?.Gold <= (payload?.cost?.GoldMax || 0)) && (item.cost?.Gold >= (payload?.cost?.Gold || 0)))          
                 ); 
             }
         }

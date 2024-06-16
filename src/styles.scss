@@ -2,7 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
 body {
     font-family: 'Cinzel', serif;
-    background-color: #87CEEB;
+    background-color: #0a222d;
+    color: #ffffff;
     font-weight: 400;
     font-size:18px;
+}
+
+.ngx-slider {
+    margin:0 15px!important;
+    .ngx-slider-bubble{
+        display: none!important;
+    }
+    &:not([disabled]) {
+        .ngx-slider-pointer,
+        .ngx-slider-selection {
+            background-color: #d6412b!important;
+        }
+    }
+    .ngx-slider-pointer.ngx-slider-active:after {
+        background-color: #0a222d!important;
+    }
 }

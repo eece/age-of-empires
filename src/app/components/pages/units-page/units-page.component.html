@@ -21,13 +21,18 @@
         <div class="col-12">
             <div class="costs my-4">
                 <h2>Costs</h2>
-                <div class="d-flex gap-4 my-2" *ngFor="let cost of costTypes">
-                    <div><input type="checkbox" (change)="changeCostCheckbox($event, cost.name)"/></div>
-                    <div class="cost-label">{{cost.name}}</div>
-                    <div>
-                        <input type="range" [min]="0" [max]="getMaxValueByCostType(cost.name)" [formControlName]="cost.name" />
+                <div class="row gap-4 my-2 w-100 align-items-center my-4" *ngFor="let cost of costTypes; let i = index">
+                    <div class="d-flex gap-2 col-lg-1">
+                        <div><input type="checkbox" (change)="changeCostCheckbox($event, cost.name, i)"/></div>
+                        <div>{{cost.name}}</div>
                     </div>
-                    <div>{{cost.min}}-{{getCost(cost.name)}}</div>
+                    <ngx-slider #refSlider class="slider col-lg-7" [value]="+getCostMin(cost.name)" [highValue]="+getCostMax(cost.name)" [options]="getOptions(cost.name)"
+                    (userChangeEnd)="onUserChangeEnd($event, cost.name)"></ngx-slider>
+                    <div class="col-lg-3">
+                        <div class="labels">
+                            {{getCostMin(cost.name)}} - {{getCostMax(cost.name)}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

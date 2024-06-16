@@ -21,6 +21,9 @@ export type CostI = Partial<{
     Wood:number | null,
     Food:number | null,
     Gold?: number | null
+    WoodMax:number | null,
+    FoodMax:number | null,
+    GoldMax?: number | null
 }>
 
 export type UnitDetailItem = Partial<{

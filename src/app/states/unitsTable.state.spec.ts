@@ -86,7 +86,7 @@ class MockDataService {
             "expansion": "Age of Kings",
             "age": "Imperial",
             "cost": {
-                "Wood": 25,
+                "Wood": 35,
                 "Food": 45
             },
             "build_time": 27,
@@ -129,10 +129,10 @@ describe('UnitsTableState', () => {
     });
 
     it('should fetch all units data', (done) => {    
-        const payload: UnitsTableActions.FetchUnitsData = {
+        const {payload}: UnitsTableActions.FetchUnitsData = {
           payload: {},
         };
-        store.dispatch(new UnitsTableActions.FetchUnitsData(payload.payload)).subscribe({
+        store.dispatch(new UnitsTableActions.FetchUnitsData(payload)).subscribe({
             next: () => {
                 const state = store.selectSnapshot(UnitsTableState.filteredResults);
                 expect(state.length).toBe(4);
@@ -142,10 +142,10 @@ describe('UnitsTableState', () => {
     });
 
     it('should fetch units data with age filter', (done) => {    
-        const payload: UnitsTableActions.FetchUnitsData = {
+        const {payload}: UnitsTableActions.FetchUnitsData = {
           payload: {age: 'Feudal'},
         };
-        store.dispatch(new UnitsTableActions.FetchUnitsData(payload.payload)).subscribe({
+        store.dispatch(new UnitsTableActions.FetchUnitsData(payload)).subscribe({
             next: () => {
                 const state = store.selectSnapshot(UnitsTableState.filteredResults);
                 expect(state.length).toBe(1);
@@ -154,24 +154,37 @@ describe('UnitsTableState', () => {
         });
     });
 
-    it('should fetch units data with full filter ', (done) => {    
-        const payload: UnitsTableActions.FetchUnitsData = {
-          payload: {cost: {Wood: 50, Gold: 50, Food: 50}},
+    it('should fetch units data with Full filter', (done) => {    
+        const {payload}: UnitsTableActions.FetchUnitsData = {
+          payload: {age: 'All', cost: {Wood: 0, WoodMax:30, Gold: 0,GoldMax:200, Food: 0, FoodMax:200}},
         };
-        store.dispatch(new UnitsTableActions.FetchUnitsData(payload.payload)).subscribe({
+        store.dispatch(new UnitsTableActions.FetchUnitsData(payload)).subscribe({
             next: () => {
                 const state = store.selectSnapshot(UnitsTableState.filteredResults);
-                expect(state.length).toBe(4);
+                expect(state.length).toBe(3);
                 done();
             }
         });
     });
     
-    it('should fetch units data with wood filter ', (done) => {    
-        const payload: UnitsTableActions.FetchUnitsData = {
-          payload: {cost: {}},
+    it('should fetch units data with Wood filter', (done) => {    
+        const {payload}: UnitsTableActions.FetchUnitsData = {
+          payload: {cost: {Wood:10, WoodMax:30}},
         };
-        store.dispatch(new UnitsTableActions.FetchUnitsData(payload.payload)).subscribe({
+        store.dispatch(new UnitsTableActions.FetchUnitsData(payload)).subscribe({
+            next: () => {
+                const state = store.selectSnapshot(UnitsTableState.filteredResults);
+                expect(state.length).toBe(3);
+                done();
+            }
+        });
+    });
+
+    it('should fetch units data with Food filter', (done) => {    
+        const {payload}: UnitsTableActions.FetchUnitsData = {
+          payload: {cost: {Food:10, FoodMax:100}},
+        };
+        store.dispatch(new UnitsTableActions.FetchUnitsData(payload)).subscribe({
             next: () => {
                 const state = store.selectSnapshot(UnitsTableState.filteredResults);
                 expect(state.length).toBe(4);

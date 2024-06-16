@@ -45,35 +45,27 @@ describe('UnitsPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('check getMaxValueByCostType', () => {
-    const woodCostType = component.costTypes.find((item) => item.name === 'Wood');
-    // Test case 1: Cost type found in the array.
-    expect(component.getMaxValueByCostType(CostType.Wood)).toEqual(woodCostType?.max || 0);
-    // Test case 2: Cost type not found in the array.
-    expect(component.getMaxValueByCostType('Unknown')).toEqual(0)
-  })
 
   it('should enable cost control when checkbox is checked', () => {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = false;
-
     const event = new Event('change');
     Object.defineProperty(event, 'target', { writable: false, value: checkbox });
     (event.target as HTMLInputElement).checked = true;
-    component.changeCostCheckbox(event, CostType.Wood);
-    expect(component?.filterForm?.controls['cost']?.get('Wood')?.enabled).toBeTrue();
+    component.changeCostCheckbox(event, CostType.Wood, 0);
+    expect(component?.getOptions(CostType.Wood)?.disabled).toBeFalse();
   });
 
   it('should disable cost control when checkbox is unchecked', () => {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = false;
-
     const event = new Event('change');
     Object.defineProperty(event, 'target', { writable: false, value: checkbox });
-    component.changeCostCheckbox(event, CostType.Wood);
-    expect(component?.filterForm?.controls['cost']?.get('Wood')?.disabled).toBeTrue();
+    (event.target as HTMLInputElement).checked = false;
+    component.changeCostCheckbox(event, CostType.Wood, 0);
+    expect(component?.getOptions(CostType.Wood)?.disabled).toBeTrue();
   });
 
   it('should set value of age control to "All"', () => {
@@ -86,17 +78,17 @@ describe('UnitsPageComponent', () => {
    */
   it('should return the cost value for a given cost type', () => {
     const costType = CostType.Wood;
-    const expectedCost = '100';
-    component.filterForm.controls['cost'].setValue({ Wood: expectedCost, Food: '', Gold: '' });
-    const result = component.getCost(costType);
-    expect(result).toEqual(expectedCost);
+    const expectedCost = 100;
+    component.filterForm.controls['cost'].setValue({ Wood: {value: expectedCost}, Food: '', Gold: '' });
+    const result = component.getCostMin(costType);
+    expect(result).toEqual(expectedCost?.toString());
   });
 
   it('should return the cost value for a given cost type', () => {
     const costType = CostType.Wood;
-    const expectedCost = '200';
-    component.filterForm.controls['cost'].setValue({ Wood: '', Food: '', Gold: '' });
-    const result = component.getCost(costType);
+    const expectedCost = '0';
+    component.filterForm.controls['cost'].setValue({ Wood: expectedCost, Food: '', Gold: '' });
+    const result = component.getCostMin(costType)?.toString();
     expect(result).toEqual(expectedCost);
   });
 
@@ -105,9 +97,9 @@ describe('UnitsPageComponent', () => {
    */
   it('should return the maximum value for a given cost type if the value is not defined', () => {
     const costType = CostType.Wood;
-    const maxValue = component.getMaxValueByCostType(costType);
-    const result = component.getCost(costType);
-    expect(result).toEqual(maxValue.toString());
+    const maxValue = 200;
+    const result = component.getCostMax(costType);
+    expect(result.toString()).toEqual(maxValue.toString());
   });
 
   it('should dispatch the FetchUnitsData action when filterForm value changes', fakeAsync(() => {
@@ -131,4 +123,3 @@ describe('UnitsPageComponent', () => {
   }));
   
 });
-
