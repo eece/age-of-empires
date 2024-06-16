@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Store } from '@ngxs/store';
@@ -15,6 +15,7 @@ import { AudioPlayerComponent } from './components/audio-player/audio-player.com
 })
 export class AppComponent implements OnInit {
   title = 'age-of-empires';
+  isNavOpen = false;
 
   constructor(private store: Store, private cdr: ChangeDetectorRef) { }
 
@@ -23,5 +24,21 @@ export class AppComponent implements OnInit {
       this.title = title
       this.cdr.detectChanges();
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onBodyClick(event: Event): void {
+    console.log('213');
+    const target = event.target as HTMLElement;
+    const isNavbarToggler = target.classList.contains('navbar-toggler') || target.classList.contains('nav-link');
+    const isNavbarCollapseShown = target.classList.contains('navbar-collapse') && target.classList.contains('show');
+
+    if (isNavbarToggler || isNavbarCollapseShown) {
+      this.toggleNav();
+    }
+  }
+
+  toggleNav() {
+    this.isNavOpen = !this.isNavOpen;
   }
 }
